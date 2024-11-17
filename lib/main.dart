@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dummy_videos_api/repository/movie_repository.dart';
+import 'package:dummy_videos_api/screens/splash_screen/splash_screen.dart';
 import 'package:dummy_videos_api/screens/video_list_screen.dart';
 import 'package:dummy_videos_api/services/api_services.dart';
 import 'package:dummy_videos_api/services/db_services.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           brightness: Brightness.dark,
         ),
-        home: const VideoListScreen(),
+        home:  SplashScreen(),
       ),
     );
   }
