@@ -5,11 +5,18 @@ import '../blocs/video/video_state.dart';
 import '../blocs/video/viedeo_bloc.dart';
 import 'widgets/video_list_item.dart';
 
-class VideoListScreen extends StatelessWidget {
+class VideoListScreen extends StatefulWidget {
   const VideoListScreen({super.key});
 
   @override
+  State<VideoListScreen> createState() => _VideoListScreenState();
+}
+
+class _VideoListScreenState extends State<VideoListScreen> {
+  @override
   Widget build(BuildContext context) {
+
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Video Player'),
@@ -48,21 +55,40 @@ class VideoListScreen extends StatelessWidget {
 
           if (state is VideoLoaded) {
             return RefreshIndicator(
-              onRefresh: () async {
-                context.read<VideoBloc>().add(RefreshVideos());
-              },
-              child: ListView.builder(
-                itemCount: state.videos.length,
-                itemBuilder: (context, index) {
-                  return VideoListItem(video: state.videos[index]);
+                onRefresh: () async {
+                  context.read<VideoBloc>().add(RefreshVideos());
                 },
-              ),
-            );
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: _getCrossAxisCount(screenSize.width),
+                    childAspectRatio: 1.1,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: state.videos.length,
+                  itemBuilder: (context, index) {
+                    final movie = state.videos[index];
+                    return VideoListItem(video: movie);
+                  },
+                ));
           }
 
           return const SizedBox();
         },
       ),
     );
+  }
+
+  int _getCrossAxisCount(double screenWidth) {
+    if (screenWidth >= 1200) {
+      return 4;
+    } else if (screenWidth >= 800) {
+      return 3;
+    } else if (screenWidth >= 600) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
 }

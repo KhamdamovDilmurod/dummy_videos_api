@@ -1,11 +1,7 @@
 import 'package:dummy_videos_api/models/video_model.dart';
-import 'package:dummy_videos_api/screens/widgets/video_controls.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import '../blocs/player/player_bloc.dart';
-import '../blocs/player/player_event.dart';
-import '../blocs/player/player_state.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final VideoModel video;
@@ -17,13 +13,22 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late final VideoController controller;
+  // Create a [Player] to control playback.
+  late final player = Player();
+  // Create a [VideoController] to handle video output from [Player].
+  late final controller = VideoController(player);
 
   @override
   void initState() {
     super.initState();
-    controller = VideoController(context.read<PlayerBloc>().player);
-    context.read<PlayerBloc>().add(LoadVideo(widget.video));
+    // Play a [Media] or [Playlist].
+    player.open(Media(widget.video.videoUrl.toString()));
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,33 +40,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: BlocBuilder<PlayerBloc, PlayerrState>(
-              builder: (context, state) {
-                if (state is PlayerLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (state is PlayerError) {
-                  return Center(
-                    child: Text('Error: ${state.message}'),
-                  );
-                }
-
-                return Stack(
-                  children: [
-                    Video(controller: controller),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: VideoControls(bloc: context.read<PlayerBloc>()),
-                    ),
-                  ],
-                );
-              },
-            ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 9.0 / 16.0,
+            // Use [Video] widget to display video output.
+            child: Video(controller: controller),
           ),
           Expanded(
             child: SingleChildScrollView(
