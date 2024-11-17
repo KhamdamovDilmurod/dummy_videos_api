@@ -42,7 +42,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 9.0 / 16.0,
+            height: MediaQuery.of(context).size.height * .6,
             // Use [Video] widget to display video output.
             child: Video(controller: controller),
           ),

@@ -62,7 +62,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
                   padding: const EdgeInsets.all(16),
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: _getCrossAxisCount(screenSize.width),
-                    childAspectRatio: 1.1,
+                    childAspectRatio: 1,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                   ),

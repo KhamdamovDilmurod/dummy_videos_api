@@ -22,14 +22,14 @@ class VideoRepositoryImpl implements VideoRepository {
     try {
 
       final videos = await apiService.fetchVideos();
-      // await localStorage.clearCache();
-      // await localStorage.cacheVideos(videos);
+      await localStorage.clearCache();
+      await localStorage.cacheVideos(videos);
       return videos;
     } catch (e) {
-      // final cachedVideos = await localStorage.getCachedVideos();
-      // if (cachedVideos.isNotEmpty) {
-      //   return cachedVideos;
-      // }
+      final cachedVideos = await localStorage.getCachedVideos();
+      if (cachedVideos.isNotEmpty) {
+        return cachedVideos;
+      }
       throw RepositoryException('Failed to fetch videos: $e');
     }
   }
