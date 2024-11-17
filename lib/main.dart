@@ -15,10 +15,13 @@ import 'blocs/video/viedeo_bloc.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
-  if (!Platform.isAndroid && !Platform.isIOS) {
+  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+    // Initialize FFI
     sqfliteFfiInit();
+    // Change the database factory to use FFI
     databaseFactory = databaseFactoryFfi;
   }
+
   runApp(const MyApp());
 }
 

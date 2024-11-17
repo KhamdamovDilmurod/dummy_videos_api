@@ -37,6 +37,7 @@ dependencies:
   dio: ^5.4.0
   flutter_bloc: ^8.1.6
   equatable:
+  sqflite:
   sqflite_common_ffi: ^2.3.4
 
   # The following adds the Cupertino Icons font to your application.
